@@ -5,7 +5,7 @@ connections.connect("default", host="localhost", port="19530")
 
 fields = [
     FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
-    FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=3072),
+    FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=1024),
     FieldSchema(name="text", dtype=DataType.VARCHAR, max_length=2000),
     FieldSchema(name="metadata", dtype=DataType.VARCHAR, max_length=2000)
 ]

@@ -1,26 +1,24 @@
-from google import genai
-from pymilvus import model, MilvusClient
 import os
+import tiktoken
+from pymilvus import model, MilvusClient
 
-client = MilvusClient(
-    uri="http://localhost:19530"
-)
+client = MilvusClient(uri=os.getenv("MILVUS_URL"))
 
-docs = [
-    "Fuad Qafarov is a good guy.",
-]
+with open("../../book.txt", "r", encoding="utf-8") as f:
+    text = f.read()
 
+enc = tiktoken.encoding_for_model("text-embedding-3-large")
+tokens = enc.encode(text)
 
-gemini_ef = model.dense.GeminiEmbeddingFunction(model_name='gemini-embedding-exp-03-07', api_key=os.environ['GEMINI_API_KEY'])
-vectors = gemini_ef.encode_documents(docs)
+chunk_size = 99      # tokens per chunk
+overlap = 10
+gemini_ef = model.dense.GeminiEmbeddingFunction(model_name='gemini-embedding-exp-03-07', api_key=os.getenv('GEMINI_API_KEY'))
+chunks = []
+for i in range(0, len(tokens), chunk_size - overlap):
+    chunk = tokens[i:i + chunk_size]
+    chunks.append(enc.decode(chunk))
 
-print(vectors)
+    vector = gemini_ef.encode_documents(list(enc.decode(chunk)))
+    data = {"vector": enc.decode(chunk), "text": chunk, "metadata": ""}
+    client.insert(collection_name="book", data=data)
 
-data = {"vector": vectors[0], "text": docs[0], "metadata": ""}
-
-
-print(data)
-client.insert(collection_name="book", data=data)
-
-#with open("turgic.txt", "r", encoding="utf-8") as f:
-#    book_text = f.read()
