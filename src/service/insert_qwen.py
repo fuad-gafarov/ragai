@@ -1,6 +1,6 @@
 import os
-import tiktoken
-from pymilvus import model, MilvusClient, connections, Collection
+
+from pymilvus import MilvusClient, connections, Collection
 from sentence_transformers import SentenceTransformer
 
 client = MilvusClient(uri=os.getenv("MILVUS_URL"))

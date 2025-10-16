@@ -1,6 +1,8 @@
+import os
+
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection
 
-connections.connect("default", host="localhost", port="19530")
+connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 
 
 fields = [
