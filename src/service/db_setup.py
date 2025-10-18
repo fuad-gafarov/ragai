@@ -1,6 +1,8 @@
+import os
+
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection
 
-connections.connect("default", host="localhost", port="19530")
+connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 
 
 fields = [
@@ -19,7 +21,4 @@ index_params = {
         "params": {"nlist": 128}   # Specific parameters for the chosen index type
 }
 
-    # Create the index on the vector field
 collection.create_index(field_name="vector", index_params=index_params)
-#collection.release()
-#collection.drop_index()

@@ -1,6 +1,5 @@
 import os
-import tiktoken
-from pymilvus import model, MilvusClient, connections, Collection
+from pymilvus import MilvusClient, connections, Collection
 from sentence_transformers import SentenceTransformer
 
 client = MilvusClient(uri=os.getenv("MILVUS_URL"))
@@ -17,10 +16,13 @@ collection.load()
 chunk_size = 500
 overlap = 100
 
+count = 0
 chunks = []
 for i in range(0, len(text), chunk_size - overlap):
     chunk = text[i:i + chunk_size]
+    count = count + 1
     embeddings = model.encode(chunk)
     data = {"vector": embeddings, "text": chunk, "metadata": ""}
     client.insert(collection_name="book", data=data)
 
+print(count)
