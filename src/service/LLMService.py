@@ -12,7 +12,8 @@ class LLMService:
         tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3-0.6B")
         model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3-0.6B")
 
-        adv_query = f"Sen kitab ekspertisen. Cavabi tamamilə Azərbaycan dilində ver və yalnız bu suala uygun ver - {repo_result}. Indi ise sual - {query}"
+        adv_query = (f"Sen kitab ekspertisen. Cavabi tamamilə Azərbaycan dilində ver və yalnız bu suala uygun ver - "
+                     f"{repo_result}. Indi ise sual - {query}")
 
         messages = [
             {"role": "user", "content": adv_query},

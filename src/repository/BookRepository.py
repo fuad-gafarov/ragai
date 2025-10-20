@@ -18,7 +18,7 @@ class BookRepository:
         return self.client.search(
             collection_name="book",
             data=[embed_query],
-            limit=10,
+            limit=5,
             search_params={"metric_type": "IP", "params": {}},
             output_fields=["text"],
         )
