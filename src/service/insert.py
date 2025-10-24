@@ -7,7 +7,7 @@ client = MilvusClient(uri=os.getenv("MILVUS_URL"))
 with open("../../book.txt", "r", encoding="utf-8") as f:
     text = f.read()
 
-model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
+model = SentenceTransformer("D:\\models\\qwen3-embedding-4B")
 
 connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 collection = Collection("book")

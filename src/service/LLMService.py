@@ -9,7 +9,7 @@ class LLMService:
     def llm_query(self, query: str):
         repo_result = self.bookRepo.find_book_by_keyword(query)
 
-        tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3-0.6B")
+        tokenizer = AutoTokenizer.from_pretrained("D:\models\Qwen3-0.6B")
         model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3-0.6B")
 
         adv_query = (f"Sen kitab ekspertisen. Cavabi tamamilə Azərbaycan dilində ver və yalnız bu suala uygun ver - "
