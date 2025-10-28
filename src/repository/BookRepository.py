@@ -1,6 +1,6 @@
 import os
 from pymilvus import Collection, MilvusClient, connections
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, models
 
 
 class BookRepository:
@@ -10,8 +10,11 @@ class BookRepository:
     def find_book_by_keyword(self, query: str):
         connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 
-        model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
-        embed_query = model.encode(query).tolist()
+        word_embedding_model = models.Transformer("D:\\models\\qwen3-06B-embedding")
+        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
+        model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
+      #  model = SentenceTransformer("D:\\models\\qwen3-06B-embedding")
+        embed_query = model.encode(query, convert_to_tensor=True).tolist()
 
         collection = Collection("book")
         collection.load()

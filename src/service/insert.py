@@ -1,13 +1,16 @@
 import os
 from pymilvus import MilvusClient, connections, Collection
 from sentence_transformers import SentenceTransformer
+import torch
+print(torch.version.cuda)
+print(torch.cuda.is_available())
 
 client = MilvusClient(uri=os.getenv("MILVUS_URL"))
 
 with open("../../book.txt", "r", encoding="utf-8") as f:
     text = f.read()
 
-model = SentenceTransformer("D:\\models\\qwen3-embedding-4B")
+model = SentenceTransformer("D:\\models\\qwen3-embedding-4B").to("cuda")
 
 connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 collection = Collection("book")
