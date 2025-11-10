@@ -7,7 +7,7 @@ connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILV
 
 fields = [
     FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
-    FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=2560),
+    FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=1024),
     FieldSchema(name="text", dtype=DataType.VARCHAR, max_length=2000),
     FieldSchema(name="metadata", dtype=DataType.VARCHAR, max_length=2000)
 ]

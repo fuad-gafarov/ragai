@@ -21,7 +21,7 @@ class LLMService:
 
         result_str = result_str.strip()
 
-
+        print(result_str)
         client = Groq()
         completion = client.chat.completions.create(
             model="openai/gpt-oss-20b",
@@ -57,7 +57,7 @@ class LLMService:
                     result_str += str(v) + " "
 
         result_str = result_str.strip()
-
+        print(result_str)
         adv_query = (f"Sen kitab ekspertisen. Cavabi tamamilə Azərbaycan dilində ver və yalnız bu suala uygun ver - "
                      f"{result_str}. Indi ise sual - {query}")
 
