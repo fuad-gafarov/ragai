@@ -1,6 +1,7 @@
 from src.repository.BookRepository import BookRepository
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from groq import Groq
+from fastapi.responses import JSONResponse
 
 
 class LLMService:
@@ -74,4 +75,5 @@ class LLMService:
         ).to(model.device)
 
         outputs = model.generate(**inputs, max_new_tokens=4000)
-        return {"key": tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])}
+        #return {"key": tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])}
+        return JSONResponse(tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:]))
