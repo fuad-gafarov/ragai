@@ -22,7 +22,7 @@ class LLMService:
 
         result_str = result_str.strip()
 
-        print(result_str)
+        #print(result_str)
         client = Groq()
         completion = client.chat.completions.create(
             model="openai/gpt-oss-20b",
