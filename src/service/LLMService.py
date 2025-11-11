@@ -21,8 +21,7 @@ class LLMService:
                     result_str += str(v) + " "
 
         result_str = result_str.strip()
-
-        #print(result_str)
+        print(result_str)
         client = Groq()
         completion = client.chat.completions.create(
             model="openai/gpt-oss-20b",
@@ -40,9 +39,12 @@ class LLMService:
             stream=True,
             stop=None
         )
-
+        result = ""
         for chunk in completion:
-            return chunk.choices[0].delta.content
+            content = getattr(chunk.choices[0].delta, "content", "") or ""
+            result += content
+
+        return result
 
     def llm_query2(self, query: str):
         repo_result = self.bookRepo.find_book_by_keyword(query)
@@ -51,7 +53,7 @@ class LLMService:
         model = AutoModelForCausalLM.from_pretrained("D:\\models\\Qwen3-4B")
 
         result_str = ""
-        count = 0
+
         for inner_list in repo_result:
             for d in inner_list:
                 for v in d.values():
