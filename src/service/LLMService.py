@@ -77,4 +77,4 @@ class LLMService:
         outputs = model.generate(**inputs, max_new_tokens=4000)
         #return {"key": tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])}
         result = tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])
-        return JSONResponse(result)
+        return JSONResponse(content={"result": result})
