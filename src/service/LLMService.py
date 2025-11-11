@@ -42,7 +42,7 @@ class LLMService:
         )
 
         for chunk in completion:
-            print(chunk.choices[0].delta.content or "", end="")
+            return chunk.choices[0].delta.content or ""
 
     def llm_query2(self, query: str):
         repo_result = self.bookRepo.find_book_by_keyword(query)
