@@ -1,6 +1,7 @@
 from src.repository.BookRepository import BookRepository
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from groq import Groq
+from fastapi.responses import JSONResponse
 
 
 class LLMService:
@@ -20,8 +21,7 @@ class LLMService:
                     result_str += str(v) + " "
 
         result_str = result_str.strip()
-
-
+        print(result_str)
         client = Groq()
         completion = client.chat.completions.create(
             model="openai/gpt-oss-20b",
@@ -39,9 +39,12 @@ class LLMService:
             stream=True,
             stop=None
         )
-
+        result = ""
         for chunk in completion:
-            print(chunk.choices[0].delta.content or "", end="")
+            content = getattr(chunk.choices[0].delta, "content", "") or ""
+            result += content
+
+        return result
 
     def llm_query2(self, query: str):
         repo_result = self.bookRepo.find_book_by_keyword(query)
@@ -50,14 +53,14 @@ class LLMService:
         model = AutoModelForCausalLM.from_pretrained("D:\\models\\Qwen3-4B")
 
         result_str = ""
-        count = 0
+
         for inner_list in repo_result:
             for d in inner_list:
                 for v in d.values():
                     result_str += str(v) + " "
 
         result_str = result_str.strip()
-
+        print(result_str)
         adv_query = (f"Sen kitab ekspertisen. Cavabi tamamilə Azərbaycan dilində ver və yalnız bu suala uygun ver - "
                      f"{result_str}. Indi ise sual - {query}")
 
@@ -74,4 +77,6 @@ class LLMService:
         ).to(model.device)
 
         outputs = model.generate(**inputs, max_new_tokens=4000)
-        return {"key": tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])}
+        #return {"key": tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])}
+        result = tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:])
+        return JSONResponse(content={"result": result})

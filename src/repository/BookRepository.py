@@ -10,7 +10,7 @@ class BookRepository:
     def find_book_by_keyword(self, query: str):
         connections.connect("default", host=os.getenv("MILVUS_IP"), port=os.getenv("MILVUS_PORT"))
 
-        word_embedding_model = models.Transformer("D:\\models\\qwen3-06B-embedding")
+        word_embedding_model = models.Transformer("Qwen/Qwen3-Embedding-0.6B")
         pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
         model = SentenceTransformer(modules=[word_embedding_model, pooling_model])
       #  model = SentenceTransformer("D:\\models\\qwen3-06B-embedding")
